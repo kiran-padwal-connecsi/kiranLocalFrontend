@@ -1,0 +1,191 @@
+{% extends 'dashboard_layout_new.html' %}
+{{ super() }}
+{% block body %}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-block">
+                    <div>
+                        <a href="/viewCampaigns"><b style="color: #9C27B0; font-weight:400; letter-spacing: 1px; font-size:15px; ">Back to List</b></a>
+                        {% for item in view_campaign_details_data['data'] %}
+                        <span><p style="text-align: center;"><b style="font-size:20px; letter-spacing: 2px; font-weight: 500">{{ item['campaign_name'] }}</b>
+                            <br />Active
+                        </p>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-9 col-md-6" style="border-right: 2px solid #A7A3A2;">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4"><b style="font-weight: 500;">Period</b>
+                                        <br />{{ item['from_date'] }} - {{ item['to_date'] }}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4"><b style="font-weight: 500">Channels</b>
+                                        <br />
+                                        {% set channels = item['channels'].split(',') %}
+                                        {% for channel in channels %}
+                                        {% if channel == 'youtube' %}
+                                        <a href="#" class="fa fa-youtube fa-lg red"></a>
+                                        {% elif channel == 'facebook' %}
+                                        <a href="#" class="fa fa-facebook fa-lg blue"></a>
+                                        {% elif channel == 'twitter' %}
+                                        <a href="#" class="fa fa-twitter fa-lg"></a>
+                                        {% elif channel == 'instagram' %}
+                                        <a href="#" class="fa fa-instagram fa-lg pink"></a>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4"><b style="font-weight: 500;">Budget</b>
+                                        <br />
+                                        <b style="font-weight: 400; font-size:15px;">{{ item['currency'] }} {{ item['budget'] }}</b> </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4"><b style="font-weight: 500">Countries</b><br />
+                                        <b style="font-weight: 400; font-size:15px;">
+                                            {% for region_name in item['region_name_list'] %}
+                                            {{ region_name }},
+                                            {% endfor %}
+                                        </b> </div>
+                                    <div class="col-sm-4 col-md-4"><b style="font-weight: 500">Files</b><br>
+                                        {% set files = item['files'].split(',') %}
+                                        {% for file in files %}
+                                        {% set ext = file[-3:] %}
+                                        <a href="../static/campaign_files/{{ file }}" download>
+                                            {% if ext == "jpg" %}
+                                            <i class="fa fa-file-image-o"></i>
+                                            {% elif ext == "doc" %}
+                                            <i class="fa fa-file-word-o"></i>
+                                            {% else %}
+                                            <i class="fa fa-file"></i>
+                                            {% endif %}
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4"><b style="font-weight: 500">Target URL</b><br>
+                                        <i class="fa fa-link"></i><a href="{{ item['target_url'] }}" target="_blank">Target Url</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4"><b style="font-weight: 500">Content Type</b><br>
+                                        {% set arrangements = item['arrangements'].split(',') %}
+                                        {% for content_type in arrangements %}
+                                        <button type="button" style="font-size:10px;">{{ content_type }}</button>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-sm-4 col-md-4"><b style="font-weight: 500">KPIs</b>
+                                        <br />
+                                        <b style="font-weight: 400; font-size:15px;"></b>{{ item['kpis'] }} </div>
+                                    <div class="col-sm-4 col-md-4"><b style="font-weight: 500">Influencers</b>
+                                        <br />{{ item['no_of_influencers'] }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-md-6">
+                                <p><b style="font-weight: 500">Description:</b></p>
+                                <br>
+                                {{ item['campaign_description'] }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div style="background-color: white;" class="table-responsive">
+                        <!--<ul class="nav nav-tabs">-->
+                            <!--{% set channels = view_campaign_details_data['data'][0]['channels'].split(',') %}-->
+                            <!--{% for channel in channels %}-->
+                            <!--<li class="nav-item">-->
+                                <!--<a class="nav-link" data-toggle="tab" href="#{{ channel }}">{{ channel }}</a>-->
+                            <!--</li>-->
+                            <!--{% endfor %}-->
+                        <!--</ul>-->
+                        <!--<div class="tab-content">-->
+
+                            <!--<div class="tab-pane container fade" id="youtube">-->
+                                <table class="table table-bordered table-striped table-hover" style="background-color: white;">
+                                    <tr>
+                                        <th><b style="font-weight: 500; font-size:15px;">Influencers</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Status</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Channels</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Cost</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Revenue</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Posts</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Views</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Clicks</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">New<br /> Users</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">Engagement %</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">CPA</b></th>
+                                        <th><b style="font-weight: 500; font-size:15px;">ROI</b></th>
+                                    </tr>
+
+                                    {% for youtube_inf_data in view_campaign_details_data['data'][0]['youtube_inf_data'] %}
+                                    <tr>
+                                        <td>
+                                            <img src="{{ youtube_inf_data['channel_img'] }}" class="rounded-circle img-border gradient-summer width-50">
+                                            <a class="collapsed" data-toggle="collapse" data-target="#{{ youtube_inf_data['channel_id'] }}">
+                                                {{ youtube_inf_data['title'] }}
+                                            </a>
+                                            <a href="/compose"><i class="fa fa-envelope"></i></a>
+                                            <div id="{{ youtube_inf_data['channel_id'] }}" class="collapse" data-parent="#{{ youtube_inf_data['channel_id'] }}">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">$1500</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">$10000</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">10</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">10000</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">$20000</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">5000</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">0.45%</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">6.5</b></td>
+                                        <td ><b style="font-size:14px; font-weight:400;">%</b></td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <!--<div class="tab-pane container fade" id="twitter">-->
+                                <!--<table class="table table-bordered table-striped table-hover" style="background-color: white;">-->
+                                    <!--<tr>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Influencers</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Status</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Cost</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Revenue</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Posts</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Views</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Clicks</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">New<br /> Users</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">Engagement %</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">CPA</b></th>-->
+                                        <!--<th><b style="font-weight: 500; font-size:15px;">ROI</b></th>-->
+                                    <!--</tr>-->
+
+                                    <!--{% for twitter_inf_data in view_campaign_details_data['data'][0]['twitter_inf_data'] %}-->
+                                    <!--<tr>-->
+                                        <!--{{ twitter_inf_data['twitter_id'] }}-->
+                                    <!--</tr>-->
+
+                                    <!--{% endfor %}-->
+                                <!--</table>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    <!--$(document).ready(function () {-->
+        <!--$(".nav-link").on('click', function () {-->
+            <!--var id = $(this).attr('href');-->
+            <!--&lt;!&ndash;alert(id);&ndash;&gt;-->
+            <!--$(this).addClass('active');-->
+            <!--&lt;!&ndash;$(this).closest().removeClass('active');&ndash;&gt;-->
+        <!--});-->
+    <!--});-->
+</script>
+{% endblock %}

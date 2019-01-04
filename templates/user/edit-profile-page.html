@@ -1,0 +1,394 @@
+{% extends 'dashboard_layout_new.html' %}
+{{ super() }}
+{% block body %}
+
+<!--Basic User Details Starts-->
+<section id="user-profile">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" style="margin:2%;">
+                        <div class="col-xl-2 col-lg-2 col-md-2 mb-1">
+                            {% if data['data']['profile_pic'] %}
+                            {{ data['data']['profile_pic'] }}
+                            <img id="profile_pic" src="static/img/{{ data['data']['profile_pic'] }}" class="rounded-circle img-border gradient-summer width-150" alt="Card image">
+                            {% else %}
+                            <img id="profile_pic2" src="static/app-assets/img/portrait/avatars/avatar-08.png" class="rounded-circle img-border gradient-summer width-150" alt="Card image">
+                            {% endif %}
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 mb-1">
+                            <form name="avtar_form" method="POST" action="/uploadProfilePic" enctype=multipart/form-data>
+                                <div class="row" style="padding-top:10%;">
+                                    <div class="file-field input-field">
+                                        <!--<form id="form1" runat="server">-->
+                                        <input type='file' id="profile_pic_fileinp" name="profile_pic" style="display:block;"/><br>
+                                        <button id="save_profile_pic" type="submit" class="btn btn-sm btn-info" style="display:none;">Save</button>
+                                        <!--<img id="blah" src="#" alt="your image" />-->
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 mb-1">
+                            <p class="grey font-small-3" style="font-size:20px;">Social Media Accounts:</p>
+                            <a href="#facebook_url"  class="fa fa-facebook grey" title="facebook" style="font-size:40px; padding-right:10px;"></a>
+                            <a href="#twitter_url"  class="fa fa-twitter grey" title="twitter" style="font-size:40px; padding-right:10px;"></a>
+                            <a href="#insta_url"  class="fa fa-instagram grey " title="instagram" style="font-size:40px; padding-right:10px;"></a>
+                            <a href="#youtube_url"  class="fa fa-youtube grey" title="youtube" style="font-size:40px;"></a>
+                            <!--<a href="#" target="_blank" class="fa fa-plus grey" title="plus" style="font-size:40px;"></a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Basic User Details Ends-->
+
+<!--About section starts-->
+<section id="about">
+    <form action="/updateProfile" method="POST">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Personal Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-block">
+                            <div class="row" style="margin-left: 2%;">
+                                <div class="col-xl-6 col-lg-6 col-md-6 mb-1">
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="first_name">*First Name:</label>
+                                            <input type="text" required class="form-control" id="first_name" name="first_name" value="{{data['data']['first_name']}}" style="width:400px;"> </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="last_name">*Last Name</label>
+                                            <input type="text" required name="last_name" id="last_name" class="form-control" value="{{data['data']['last_name']}}" style="width:400px;"> </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="position">Position</label>
+                                            <input type="text" name="position" id="position" class="form-control" value="{{data['data']['position']}}" placeholder="Position" style="width:400px;"> </span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 mb-1">
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="email">*Business Email</label>
+                                            <input type="email" disabled class="form-control" id="email" value="{{data['data']['email_id']}}" style="width:400px;"> </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <a class="display-block overflow-hidden">
+                                            <label for="phone">Phone</label>
+                                            <input type="text" name="phone" id="phone" class="form-control" value="{{data['data']['phone']}}" placeholder="Phone" style="width:400px;"> </a>
+                                    </div>
+                                    <!--<div class="row" style="margin-bottom: 5px;">-->
+                                    <!--<span class="display-block overflow-hidden">-->
+                                    <!--<label for="password">*Password</label>-->
+                                    <!--<input type="text" id="password" required name="password" class="form-control" value="" style="width:400px;"> </span>-->
+                                    <!--</div>-->
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#change_pass_modal">Change Password</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <h5>Company Information</h5>
+                            <div class="row" style="margin-left: 2%;">
+                                <div class="col-xl-6 col-lg-6 col-md-6 mb-1">
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="Company_name">*Company Name:</label>
+                                            <input type="text" id="company_name" required name="company_name" class="form-control" value="{{data['data']['company_name']}}" style="width:400px;"></span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="country">*Country</label>
+                                            <input type="text" id="country" required name="country" class="form-control" value="{{data['data']['country']}}" placeholder="Country" style="width:400px;"> </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="city">City:</label>
+                                            <input type="text"id="city" name="city" class="form-control" value="{{data['data']['city']}}" placeholder="City" style="width:400px;"> </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="business_sector">*Business Sector:</label>
+                                            <!--<input type="text" id="business_sector" required name="business_sector" class="form-control" value="{{data['data']['business_sector']}}" placeholder="Business Sector" style="width:400px;"> </span>-->
+                                            <select id="business_sector" required name="business_sector" class="form-control" value="{{data['data']['business_sector']}}" style="width:400px;">
+                                                <option value="aerospace_industry">Aerospace industry</option>
+                                                <option value="fishing_industry">Fishing industry</option>
+                                                <option value="timber_industry">Timber industry</option>
+                                                <option value="tobacco_industry">Tobacco industry</option>
+                                                <option value="pharmaceutical_industry">Pharmaceutical industry</option>
+                                                <option value="software_industry">Software industry</option>
+                                                <option value="construction_industry">Construction industry</option>
+                                                <option value="defense_industry">Defense industry</option>
+                                                <option value="education_industry">Education industry</option>
+                                                <option value="electrical_power_industry">Electrical power industry</option>
+                                                <option value="petroleum_industry">Petroleum industry</option>
+                                                <option value="entertainment_industry">Entertainment industry</option>
+                                            </select>
+                                            </span>
+
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="no_of_employees">*No. of Employees:</label>
+                                            <!--<input type="text" id="no_of_employees" required name="no_of_employees" class="form-control" value="{{data['data']['no_of_employees']}}" style="width:400px;"> </span>-->
+                                            <select id="no_of_employees" required name = "no_of_employees" class="form-control" value="{{data['data']['no_of_employees']}}" style="width:400px;">
+                                                <option value="0-10">0-10</option>
+                                                <option value="10-20">10-20</option>
+                                                <option value="20+">20+</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="monthly_budget">Budget(monthly):</label>
+                                            <input type="text" id="monthly_budget" name="monthly_budget" class="form-control"  value="{{data['data']['monthly_budget']}}" style="width:400px;">  </span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 mb-1">
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <a class="display-block overflow-hidden">
+                                            <label for="url">URL:</label>
+                                            <input type="url" id="url" required name="url" class="form-control" value="{{data['data']['url']}}" placeholder="Title" style="width:400px;"> </a>
+                                    </div>
+
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="facebook_url">Facebook Url:</label>
+                                            <input type="url" id="facebook_url" name="facebook_url" class="form-control"  value="{{data['data']['facebook_url']}}" style="width:400px;">  </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="twitter_url">Twitter Url:</label>
+                                            <input type="url" id="twitter_url" name="twitter_url" class="form-control"  value="{{data['data']['twitter_url']}}" style="width:400px;">  </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="insta_url">Instragram Url:</label>
+                                            <input type="url" id="insta_url" name="insta_url" class="form-control"  value="{{data['data']['insta_url']}}" style="width:400px;">  </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="youtube_url">Youtube Url:</label>
+                                            <input type="url" id="youtube_url" name="youtube_url" class="form-control"  value="{{data['data']['youtube_url']}}" style="width:400px;">  </span>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5px;">
+                                        <span class="display-block overflow-hidden">
+                                            <label for="budget_currency">Currency:</label>
+                                            <!--<input type="url" id="budget_currency" name="budget_currency" class="form-control"  value="{{data['data']['youtube_url']}}" style="width:400px;">  </span>-->
+                                            <select id="budget_currency" name="budget_currency" class="form-control" value="{{data['data']['budget_currency']}}" style="width:100px;">
+                                                <option value="USD">&#36; USD </option>
+                                                <option value="EUR">&#8364; EUR </option>
+                                                <option value="GBP">&#163; GBP </option>
+                                                <option value="INR">&#8377; INR </option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="team-members" data-tooltip="true" title="This Section is under Developement">
+                                <div class="row" style="margin:2%;">
+                                    <b>Team Members(3) : </b>
+                                </div>
+                                <div class="row" style="margin-left:2%;">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col">Name:</th>
+                                                <th scope="col">Position:</th>
+                                                <th scope="col">Role:</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td><img src="static/app-assets/img/portrait/avatars/avatar-08.png" class="rounded-circle img-border gradient-summer width-50" alt="Card image"></td>
+                                                <td>Mohit Kumar</td>
+                                                <td>CEO</td>
+                                                <td>Admin</td>
+                                                <td>
+                                                    <a href="#" target="_blank" class="fa fa-wrench grey" title="settings" style="font-size:20px; padding-right:10px;"></a>
+                                                    <a href="#" target="_blank" class="fa fa-times-circle-o red" title="cross" style="font-size:20px; padding-right:10px;"></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><img src="static/app-assets/img/portrait/avatars/avatar-08.png" class="rounded-circle img-border gradient-summer width-50" alt="Card image"></td>
+                                                <td>Abhinav</td>
+                                                <td>Lead Developer</td>
+                                                <td>Moderator</td>
+                                                <td>
+                                                    <a href="#" target="_blank" class="fa fa-wrench grey" title="settings" style="font-size:20px; padding-right:10px;"></a>
+                                                    <a href="#" target="_blank" class="fa fa-times-circle-o red" title="cross" style="font-size:20px; padding-right:10px;"></a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><img src="static/app-assets/img/portrait/avatars/avatar-08.png" class="rounded-circle img-border gradient-summer width-50" alt="Card image"></td>
+                                                <td>Sandeep</td>
+                                                <td>Marketing Head</td>
+                                                <td>Moderator</td>
+                                                <td>
+                                                    <a href="#" target="_blank" class="fa fa-wrench grey" title="settings" style="font-size:20px; padding-right:10px;"></a>
+                                                    <a href="#" target="_blank" class="fa fa-times-circle-o red" title="cross" style="font-size:20px; padding-right:10px;"></a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success" style="margin-left:45%; padding-left:15px; padding-right:15px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<!-- Change passowrd Modal -->
+<div class="modal fade" id="change_pass_modal" role="dialog" data-backdrop="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <b class="modal-title">Change Password</b>
+                <button  type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form name="change_password_form" id="change_password_form" action="/changePassword" method="POST">
+                <div class="modal-body">
+                    <!--<input class="form-control" required type="text" name="old_password" id="old_password" placeholder="Old Password"><br>-->
+                    <input class="form-control" required type="password" name="new_password" id="new_password" placeholder="New Password"><br>
+                    <input class="form-control" required type="password" name="con_new_password" id="con_new_password" placeholder="Confirm New Password">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" onclick="return check('change_password_form','new_password','con_new_password')">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script charset="utf-8" type="text/javascript">
+        function check(Form_Name, password,confirm_password)
+        {
+            var pass1 = document.getElementById(password).value;
+            var pass2 = document.getElementById(confirm_password).value;
+            <!--alert(pass1);-->
+            if(pass2 != pass1){
+                <!--M.toast({html: 'Password Doesnt Match.'})-->
+                alert("Password Doesnt Match")
+                return false;
+            }
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                $('#profile_pic').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+</script>
+
+<style>
+<!--:target {-->
+  <!--display: block;-->
+  <!--position: relative;-->
+  <!--top: -120px;-->
+  <!--visibility: visible;-->
+<!---->}
+</style>
+<script>
+    (function(document, history, location) {
+  var HISTORY_SUPPORT = !!(history && history.pushState);
+
+  var anchorScrolls = {
+    ANCHOR_REGEX: /^#[^ ]+$/,
+    OFFSET_HEIGHT_PX: 100,
+
+    /**
+     * Establish events, and fix initial scroll position if a hash is provided.
+     */
+    init: function() {
+      this.scrollToCurrent();
+      window.addEventListener('hashchange', this.scrollToCurrent.bind(this));
+      document.body.addEventListener('click', this.delegateAnchors.bind(this));
+    },
+
+    /**
+     * Return the offset amount to deduct from the normal scroll position.
+     * Modify as appropriate to allow for dynamic calculations
+     */
+    getFixedOffset: function() {
+      return this.OFFSET_HEIGHT_PX;
+    },
+
+    /**
+     * If the provided href is an anchor which resolves to an element on the
+     * page, scroll to it.
+     * @param  {String} href
+     * @return {Boolean} - Was the href an anchor.
+     */
+    scrollIfAnchor: function(href, pushToHistory) {
+      var match, rect, anchorOffset;
+
+      if(!this.ANCHOR_REGEX.test(href)) {
+        return false;
+      }
+
+      match = document.getElementById(href.slice(1));
+
+      if(match) {
+        rect = match.getBoundingClientRect();
+        anchorOffset = window.pageYOffset + rect.top - this.getFixedOffset();
+        window.scrollTo(window.pageXOffset, anchorOffset);
+
+        // Add the state to history as-per normal anchor links
+        if(HISTORY_SUPPORT && pushToHistory) {
+          history.pushState({}, document.title, location.pathname + href);
+        }
+      }
+
+      return !!match;
+    },
+
+    /**
+     * Attempt to scroll to the current location's hash.
+     */
+    scrollToCurrent: function() {
+      this.scrollIfAnchor(window.location.hash);
+    },
+
+    /**
+     * If the click event's target was an anchor, fix the scroll position.
+     */
+    delegateAnchors: function(e) {
+      var elem = e.target;
+
+      if(
+        elem.nodeName === 'A' &&
+        this.scrollIfAnchor(elem.getAttribute('href'), true)
+      ) {
+        e.preventDefault();
+      }
+    }
+  };
+
+  window.addEventListener(
+    'DOMContentLoaded', anchorScrolls.init.bind(anchorScrolls)
+  );
+})(window.document, window.history, window.location);
+</script>
+{% endblock %}
